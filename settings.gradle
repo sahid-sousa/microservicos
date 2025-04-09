@@ -1,0 +1,3 @@
+include "pedido-producer"
+include "pedido-consumer"
+include "pagamento"
