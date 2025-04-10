@@ -1,0 +1,16 @@
+package br.com.pedido.adapters.gateway.pedido;
+
+import br.com.pedido.domain.entities.Loja;
+import br.com.pedido.domain.entities.Pedido;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface PedidoGateway {
+
+    Pedido save(Pedido pedido);
+    Optional<Pedido> findByCodigo(String codigo);
+    Pedido findById(Long id);
+    List<Pedido> findAllByLoja(Loja loja);
+
+}

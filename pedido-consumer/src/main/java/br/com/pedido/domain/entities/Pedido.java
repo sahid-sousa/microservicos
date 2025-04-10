@@ -22,10 +22,13 @@ public class Pedido {
     private Date data;
     private Boolean faturado;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "loja_id")
     private Loja loja;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "pedido_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos = new ArrayList<>();
+
+    public void adicionarPagamento(Pagamento pagamento) {
+        this.pagamentos.add(pagamento);
+        pagamento.setPedido(this);
+    }
 
 }

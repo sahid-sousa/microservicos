@@ -1,10 +1,6 @@
 package br.com.pedido.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,5 +21,9 @@ public class Pagamento {
     private Integer nsu;
     private String bandeira;
     private Double valor;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Pedido pedido;
 
 }

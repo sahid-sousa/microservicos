@@ -19,7 +19,12 @@ public class Loja {
     private Long id;
     private String codigo;
     private String cnpj;
-    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "loja", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidos = new ArrayList<>();
+
+    public void adicionarPedido(Pedido pedido) {
+        this.pedidos.add(pedido);
+        pedido.setLoja(this);
+    }
 
 }
