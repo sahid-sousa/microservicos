@@ -9,9 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/pagamento" />
             <option value="$PROJECT_DIR$/pedido-consumer" />
             <option value="$PROJECT_DIR$/pedido-producer" />
+            <option value="$PROJECT_DIR$/venda-producer" />
           </set>
         </option>
       </GradleProjectSettings>

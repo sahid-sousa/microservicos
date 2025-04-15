@@ -1,13 +1,13 @@
-package br.com.gateway.pagamento;
+package br.com.gateway.venda;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PagamentoApplication {
+public class VendaGatewayProducerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PagamentoApplication.class, args);
+        SpringApplication.run(VendaGatewayProducerApplication.class, args);
     }
 
 }

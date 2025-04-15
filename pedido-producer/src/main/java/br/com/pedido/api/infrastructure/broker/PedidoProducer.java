@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PedidoProducer {
 
-     private final RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     public PedidoProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
