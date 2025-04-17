@@ -1,6 +1,6 @@
 package br.com.gateway.venda.infrastructure.route;
 
-import br.com.gateway.venda.infrastructure.broker.VendaGatewayProducer;
+import br.com.gateway.venda.infrastructure.broker.Producer;
 import br.com.gateway.venda.interfaces.dto.VendaDetailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -23,14 +23,14 @@ import java.util.stream.Stream;
 @Component
 public class FileReader implements Processor {
 
-    VendaGatewayProducer vendaGatewayProducer;
+    Producer<VendaDetailDto> producer;
 
-    public FileReader(VendaGatewayProducer vendaGatewayProducer) {
-        this.vendaGatewayProducer = vendaGatewayProducer;
+    public FileReader(Producer<VendaDetailDto> producer) {
+        this.producer = producer;
     }
 
     @Override
-    public void process(Exchange exchange) throws Exception {
+    public void process(Exchange exchange)  {
         InputStream inputStream = exchange.getIn().getBody(InputStream.class);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         Stream<String> lines = reader.lines();
@@ -48,7 +48,7 @@ public class FileReader implements Processor {
 
     public void processContent(String[] fields) {
         VendaDetailDto venda = convertContentToVendaDetailDto(fields);
-        vendaGatewayProducer.enviar(venda);
+        producer.enviar(venda);
     }
 
     public VendaDetailDto convertContentToVendaDetailDto(String[] fields) {

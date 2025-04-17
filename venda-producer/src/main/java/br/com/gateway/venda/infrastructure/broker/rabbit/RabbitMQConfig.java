@@ -1,4 +1,4 @@
-package br.com.gateway.venda.infrastructure.broker;
+package br.com.gateway.venda.infrastructure.broker.rabbit;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

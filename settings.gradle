@@ -1,3 +1,4 @@
 include "pedido-producer"
 include "pedido-consumer"
 include "venda-producer"
+include "venda-consumer"

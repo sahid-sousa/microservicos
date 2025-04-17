@@ -1,4 +1,4 @@
-package br.com.pedido.infrastructure.broker;
+package br.com.pedido.infrastructure.broker.rabbit;
 
 import br.com.pedido.application.usecases.CriarPedido;
 import br.com.pedido.interfaces.dto.PedidoDto;

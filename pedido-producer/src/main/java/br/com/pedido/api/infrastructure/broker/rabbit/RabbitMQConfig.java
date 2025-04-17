@@ -1,4 +1,4 @@
-package br.com.pedido.api.infrastructure.broker;
+package br.com.pedido.api.infrastructure.broker.rabbit;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

@@ -1,5 +1,6 @@
-package br.com.gateway.venda.infrastructure.broker;
+package br.com.gateway.venda.infrastructure.broker.rabbit;
 
+import br.com.gateway.venda.infrastructure.broker.Producer;
 import br.com.gateway.venda.interfaces.dto.VendaDetailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class VendaGatewayProducer {
+public class VendaGatewayProducer implements Producer<VendaDetailDto> {
 
     private final RabbitTemplate rabbitTemplate;
 

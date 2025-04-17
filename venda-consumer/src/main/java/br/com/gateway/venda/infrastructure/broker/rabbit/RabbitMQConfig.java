@@ -1,4 +1,4 @@
-package br.com.pedido.infrastructure.broker;
+package br.com.gateway.venda.infrastructure.broker.rabbit;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    static final String EXCHANGE_NAME = "pedido";
-    static final String QUEUE_NAME = "pedido-queue";
-    static final String ROUTING_KEY = "pedido-routing-key";
+    static final String EXCHANGE_NAME = "venda";
+    static final String QUEUE_NAME = "venda-queue";
+    static final String ROUTING_KEY = "venda-routing-key";
 
     @Bean
     Queue queue() {
@@ -40,3 +40,4 @@ public class RabbitMQConfig {
     }
 
 }
+
