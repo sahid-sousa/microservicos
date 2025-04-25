@@ -1,7 +1,7 @@
 package br.com.pedido.infrastructure.broker.rabbit;
 
+import br.com.commons.dto.pedido.PedidoDto;
 import br.com.pedido.application.usecases.CriarPedido;
-import br.com.pedido.interfaces.dto.PedidoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;

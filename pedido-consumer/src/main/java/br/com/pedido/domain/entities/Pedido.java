@@ -27,10 +27,18 @@ public class Pedido {
     private Double valor;
     private Date data;
     private Boolean faturado;
-    @ManyToOne(cascade = CascadeType.ALL)
+    private Boolean conciliado;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Loja loja;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos = new ArrayList<>();
+
+    @PrePersist
+    public void prePersist() {
+        if (conciliado == null) {
+            conciliado = false;
+        }
+    }
 
     public void adicionarPagamento(Pagamento pagamento) {
         this.pagamentos.add(pagamento);

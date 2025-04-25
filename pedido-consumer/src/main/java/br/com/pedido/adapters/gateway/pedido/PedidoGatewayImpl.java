@@ -3,6 +3,7 @@ package br.com.pedido.adapters.gateway.pedido;
 import br.com.pedido.domain.entities.Loja;
 import br.com.pedido.domain.entities.Pedido;
 import br.com.pedido.infrastructure.database.PedidoRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,11 @@ public class PedidoGatewayImpl implements PedidoGateway {
     @Override
     public List<Pedido> findAllByLoja(Loja loja) {
         return pedidoRepository.findAllByLoja(loja);
+    }
+
+    @Override
+    public List<Long> findAllStatus(Boolean faturado, Boolean conciliado, Pageable pageable) {
+        return pedidoRepository.findAllStatus(faturado, conciliado, pageable);
     }
 
 }

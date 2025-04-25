@@ -1,13 +1,13 @@
 package br.com.pedido.application.usecases;
 
+import br.com.commons.dto.pedido.PagamentoDto;
+import br.com.commons.dto.pedido.PedidoDto;
 import br.com.pedido.adapters.gateway.loja.LojaGateway;
 import br.com.pedido.adapters.gateway.pagamento.PagamentoGateway;
 import br.com.pedido.adapters.gateway.pedido.PedidoGateway;
 import br.com.pedido.domain.entities.Loja;
 import br.com.pedido.domain.entities.Pagamento;
 import br.com.pedido.domain.entities.Pedido;
-import br.com.pedido.interfaces.dto.PagamentoDto;
-import br.com.pedido.interfaces.dto.PedidoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

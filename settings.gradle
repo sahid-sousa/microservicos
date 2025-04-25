@@ -1,4 +1,6 @@
+include "commons"
 include "pedido-producer"
 include "pedido-consumer"
+include "transacao-producer"
 include "venda-producer"
 include "venda-consumer"

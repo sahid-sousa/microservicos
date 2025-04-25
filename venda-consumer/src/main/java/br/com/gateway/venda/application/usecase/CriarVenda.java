@@ -1,8 +1,8 @@
 package br.com.gateway.venda.application.usecase;
 
+import br.com.commons.dto.venda.VendaDetailDto;
 import br.com.gateway.venda.adapters.gateway.VendaGateway;
 import br.com.gateway.venda.domain.entities.Venda;
-import br.com.gateway.venda.interfaces.dto.VendaDetailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,12 @@
-package br.com.pedido.api.interfaces.dto;
+package br.com.commons.dto.pedido;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 public record PedidoDto(
+        String uuid,
         String codigo,
         Double valor,
         Date data,
@@ -12,5 +14,6 @@ public record PedidoDto(
         LojaDto loja,
         List<PagamentoDto> pagamentos
 ) implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 }

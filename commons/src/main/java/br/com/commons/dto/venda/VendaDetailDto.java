@@ -1,4 +1,4 @@
-package br.com.gateway.venda.interfaces.dto;
+package br.com.commons.dto.venda;
 
 import java.io.Serial;
 import java.io.Serializable;

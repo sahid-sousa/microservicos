@@ -1,7 +1,7 @@
 package br.com.gateway.venda.infrastructure.broker.rabbit;
 
+import br.com.commons.dto.venda.VendaDetailDto;
 import br.com.gateway.venda.infrastructure.broker.Producer;
-import br.com.gateway.venda.interfaces.dto.VendaDetailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;

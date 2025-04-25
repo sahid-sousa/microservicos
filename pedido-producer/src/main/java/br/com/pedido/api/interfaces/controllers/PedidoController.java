@@ -1,8 +1,8 @@
 package br.com.pedido.api.interfaces.controllers;
 
 
+import br.com.commons.dto.pedido.PedidoDto;
 import br.com.pedido.api.infrastructure.broker.Producer;
-import br.com.pedido.api.interfaces.dto.PedidoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

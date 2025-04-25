@@ -23,6 +23,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.apache.camel.springboot:camel-spring-boot:4.11.0"
     implementation 'org.apache.camel:camel-ftp:4.11.0'
+    implementation project(':commons')
     compileOnly "org.projectlombok:lombok"
     annotationProcessor "org.projectlombok:lombok"
     developmentOnly "org.springframework.boot:spring-boot-devtools"
