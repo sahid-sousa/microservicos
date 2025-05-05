@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface TransacaoGateway {
 
-    void save(Transacao transacao);
+    Transacao save(Transacao transacao);
     Optional<Transacao> findByAtributos(
             Date data,
             Integer quantidadeParcelas,

@@ -18,12 +18,13 @@ public class CriarVendaImpl implements CriarVenda {
     }
 
     @Override
-    public void executar(VendaDetailDto vendaDetailDto) {
+    public Venda executar(VendaDetailDto vendaDetailDto) {
         Venda venda = criarVenda(vendaDetailDto);
-        vendaGateway.save(venda);
+        return vendaGateway.save(venda);
     }
 
-    private Venda criarVenda(VendaDetailDto vendaDetailDto) {
+    @Override
+    public Venda criarVenda(VendaDetailDto vendaDetailDto) {
         return vendaGateway.findByAtributos(
                 vendaDetailDto.dataVenda(),
                 vendaDetailDto.cartao(),

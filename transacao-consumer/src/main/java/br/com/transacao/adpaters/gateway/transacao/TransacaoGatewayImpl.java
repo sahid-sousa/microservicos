@@ -19,8 +19,8 @@ public class TransacaoGatewayImpl implements TransacaoGateway {
     }
 
     @Override
-    public void save(Transacao transacao) {
-        transacaoRepository.save(transacao);
+    public Transacao save(Transacao transacao) {
+        return transacaoRepository.save(transacao);
     }
 
     @Override

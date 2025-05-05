@@ -30,7 +30,8 @@ public class CriarTransacaoImpl implements CriarTransacao {
         }
     }
 
-    private Transacao criarTransacao(TransacaoDto transacaoDto) {
+    @Override
+    public Transacao criarTransacao(TransacaoDto transacaoDto) {
         return transacaoGateway.findByAtributos(
                 transacaoDto.data(),
                 transacaoDto.totalParcelas(),

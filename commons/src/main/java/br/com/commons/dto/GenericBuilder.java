@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 public class GenericBuilder<T> {
 
-    private T entity;
+    private final T entity;
 
     public GenericBuilder(T entity) {
         this.entity = entity;

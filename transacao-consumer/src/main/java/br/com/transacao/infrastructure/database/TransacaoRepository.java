@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface TransacaoRepository extends Repository<Transacao, Long> {
 
-    void save(Transacao transacao);
+    Transacao save(Transacao transacao);
     @Query("""
     SELECT t FROM Transacao t 
         WHERE t.data = :data
