@@ -15,6 +15,7 @@ public interface PedidoRepository extends Repository<Pedido, Long> {
     Pedido save(Pedido pedido);
     Pedido findById(Long id);
     Optional<Pedido> findByCodigo(String codigo);
+    Optional<Pedido> findByUuid(String uuid);
     List<Pedido> findAllByLoja(Loja loja);
 
     @Query("SELECT p.id FROM Pedido p where p.faturado =:faturado AND p.conciliado =:conciliado")

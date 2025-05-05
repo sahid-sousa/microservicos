@@ -33,6 +33,11 @@ public class PedidoGatewayImpl implements PedidoGateway {
     }
 
     @Override
+    public Optional<Pedido> findByUuid(String uuid) {
+        return pedidoRepository.findByUuid(uuid);
+    }
+
+    @Override
     public List<Pedido> findAllByLoja(Loja loja) {
         return pedidoRepository.findAllByLoja(loja);
     }

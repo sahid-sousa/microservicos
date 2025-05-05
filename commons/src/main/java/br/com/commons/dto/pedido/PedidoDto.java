@@ -11,6 +11,7 @@ public record PedidoDto(
         Double valor,
         Date data,
         Boolean faturado,
+        Boolean conciliado,
         LojaDto loja,
         List<PagamentoDto> pagamentos
 ) implements Serializable {

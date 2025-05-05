@@ -11,6 +11,7 @@ public interface PedidoGateway {
 
     Pedido save(Pedido pedido);
     Optional<Pedido> findByCodigo(String codigo);
+    Optional<Pedido> findByUuid(String uuid);
     Pedido findById(Long id);
     List<Pedido> findAllByLoja(Loja loja);
     List<Long> findAllStatus(Boolean faturado, Boolean conciliado, Pageable pageable);

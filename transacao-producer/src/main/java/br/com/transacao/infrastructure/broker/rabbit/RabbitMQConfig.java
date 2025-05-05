@@ -1,4 +1,4 @@
-package br.com.gateway.venda.infrastructure.broker.rabbit;
+package br.com.transacao.infrastructure.broker.rabbit;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -9,9 +9,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    static final String EXCHANGE_NAME = "venda";
-    static final String QUEUE_NAME = "venda-queue";
-    static final String ROUTING_KEY = "venda-routing-key";
+    static final String EXCHANGE_NAME = "transacao";
+    static final String QUEUE_NAME = "transacao-queue";
+    static final String ROUTING_KEY = "transacao-routing-key";
+
+    static final String TRANSACAO_REQUEST_QUEUE = "transacao-request-queue";
+    static final String TRANSACAO_REQUEST_ROUTING_KEY = "transacao-request-routing-key";
+    static final String TRANSACAO_REQUEST_EXCHANGE = "transacao-request-exchange";
+    static final String RPC_TRANSACAO_REQUEST_REPLY_QUEUE = "rpc-transacao-request-reply-queue";
 
     static final String VENDA_REQUEST_QUEUE = "venda-request-queue";
     static final String VENDA_REQUEST_ROUTING_KEY = "venda-request-routing-key";
@@ -42,6 +47,29 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    DirectExchange rpcTransacaoExchange() {
+        return new DirectExchange(TRANSACAO_REQUEST_EXCHANGE);
+    }
+
+    @Bean
+    public Queue transacaoRequestQueue() {
+        return new Queue(TRANSACAO_REQUEST_QUEUE, true);
+    }
+
+    @Bean
+    public Queue replyTransacaoQueueRpc() {
+        return new Queue(RPC_TRANSACAO_REQUEST_REPLY_QUEUE, true);
+    }
+
+    @Bean
+    public Binding rpcTransacaoBinding() {
+        return BindingBuilder
+                .bind(transacaoRequestQueue())
+                .to(rpcTransacaoExchange())
+                .with(TRANSACAO_REQUEST_ROUTING_KEY);
+    }
+
+    @Bean
     DirectExchange rpcVendaExchange() {
         return new DirectExchange(VENDA_REQUEST_EXCHANGE);
     }
@@ -63,6 +91,4 @@ public class RabbitMQConfig {
                 .to(rpcVendaExchange())
                 .with(VENDA_REQUEST_ROUTING_KEY);
     }
-
 }
-

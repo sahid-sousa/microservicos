@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public record VendaDetailDto(
+        String uuid,
         Date dataVenda,
         String cartao,
         String codigoAutorizacao,
