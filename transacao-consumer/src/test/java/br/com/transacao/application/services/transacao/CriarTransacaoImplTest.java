@@ -1,4 +1,4 @@
-package br.com.transacao.application.services;
+package br.com.transacao.application.services.transacao;
 
 import br.com.commons.dto.transacao.TransacaoDto;
 import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -28,12 +30,15 @@ public class CriarTransacaoImplTest {
     TransacaoGateway transacaoGateway;
 
     @Test
-    public void executarTransacao() {
+    public void executarTransacao() throws ParseException {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
         TransacaoDto dto = new TransacaoDto(
                 "LOJA123",
                 "PEDIDO456",
                 "uuid-abc-123",
-                new Date(),
+                formatter.parse("07/05/2025"),
                 3,
                 new BigDecimal("150.00"),
                 new BigDecimal("2.50"),

@@ -1,32 +1,48 @@
-package br.com.transacao.application.services;
+package br.com.transacao.application.services.transacao;
+
 
 import br.com.commons.dto.GenericBuilder;
+import br.com.commons.dto.transacao.ParcelaDto;
 import br.com.commons.dto.transacao.TransacaoDto;
 import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
-import br.com.transacao.application.usecases.CriarTransacao;
+import br.com.transacao.application.usecases.parcela.CalcularParcelas;
+import br.com.transacao.application.usecases.parcela.CriarParcela;
+import br.com.transacao.application.usecases.transacao.CriarTransacao;
+import br.com.transacao.domain.entities.Parcela;
 import br.com.transacao.domain.entities.StatusTransacao;
 import br.com.transacao.domain.entities.Transacao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
 public class CriarTransacaoImpl implements CriarTransacao {
 
     private final TransacaoGateway transacaoGateway;
+    private final CalcularParcelas calcularParcelas;
+    private final CriarParcela criarParcela;
 
-    public CriarTransacaoImpl(TransacaoGateway transacaoGateway) {
+    public CriarTransacaoImpl(TransacaoGateway transacaoGateway, CalcularParcelas calcularParcelas, CriarParcela criarParcela) {
         this.transacaoGateway = transacaoGateway;
+        this.calcularParcelas = calcularParcelas;
+        this.criarParcela = criarParcela;
     }
 
     @Override
     public void executar(TransacaoDto transacaoDto) {
         Transacao transacao = criarTransacao(transacaoDto);
-        if (transacao.getId() == null) {
-            log.info("Criando Transacao: {} Codigo Aut.: {}", transacao.getTipoTransacao(), transacao.getCodigoAutorizacao());
-            transacaoGateway.save(transacao);
+        if (transacao.getParcelas().isEmpty()) {
+            List<ParcelaDto> parcelas = calcularParcelas.calcular(transacao);
+            log.info("Agendamento:");
+            for (ParcelaDto parcelaDto : parcelas) {
+                Parcela parcela = criarParcela.criar(transacao, parcelaDto);
+                log.info(" - Transacao: #{} {} Codigo Aut.: {} Dt.: {} St.: {}", transacao.getId(), transacao.getTipoTransacao(), transacao.getCodigoAutorizacao(), transacao.getData(), transacao.getStatus());
+                log.info(" - Parcela Num: {} Vlb: {} Dt.: {}", parcela.getNumero(), parcela.getValorBruto(), parcela.getData());
+            }
         } else {
-            log.info("Transacao: {}", transacao.getUuid());
+            log.info(" - Transacao: #{} {} Codigo Aut.: {} Dt.: {} St.: {}", transacao.getId(), transacao.getTipoTransacao(), transacao.getCodigoAutorizacao(), transacao.getData(), transacao.getStatus());
         }
     }
 
@@ -41,7 +57,7 @@ public class CriarTransacaoImpl implements CriarTransacao {
                 transacaoDto.codigoAutorizacao(),
                 transacaoDto.nsu(),
                 transacaoDto.bandeira(),
-                StatusTransacao.PENDENTE
+                StatusTransacao.AGENDADO
         ).orElseGet(GenericBuilder.of(Transacao.class)
                 .with(t -> t.setCodigoLoja(transacaoDto.codigoLoja()))
                 .with(t -> t.setCodigoPedido(transacaoDto.codigoPedido()))

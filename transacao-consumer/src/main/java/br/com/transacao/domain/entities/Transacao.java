@@ -49,7 +49,7 @@ public class Transacao {
         }
     }
 
-    private void adicionarParcela(Parcela parcela) {
+    public void adicionarParcela(Parcela parcela) {
         this.parcelas.add(parcela);
         parcela.setTransacao(this);
     }

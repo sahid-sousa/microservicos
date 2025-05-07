@@ -24,7 +24,7 @@ public interface TransacaoRepository extends Repository<Transacao, Long> {
         AND t.nsu = :nsu
         AND t.bandeira = :bandeira
         AND t.status = :status
-        AND t.parcelas IS EMPTY
+        AND t.parcelas IS NOT EMPTY
     """)
     Optional<Transacao> findByAtributos(
             @Param("data") Date data,

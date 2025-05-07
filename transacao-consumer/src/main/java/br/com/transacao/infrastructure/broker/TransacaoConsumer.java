@@ -1,7 +1,7 @@
 package br.com.transacao.infrastructure.broker;
 
 import br.com.commons.dto.transacao.TransacaoDto;
-import br.com.transacao.application.usecases.CriarTransacao;
+import br.com.transacao.application.usecases.transacao.CriarTransacao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;

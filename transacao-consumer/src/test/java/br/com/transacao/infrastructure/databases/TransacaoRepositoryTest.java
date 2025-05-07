@@ -1,6 +1,5 @@
 package br.com.transacao.infrastructure.databases;
 
-import br.com.commons.dto.transacao.TransacaoDto;
 import br.com.transacao.domain.entities.StatusTransacao;
 import br.com.transacao.domain.entities.Transacao;
 import br.com.transacao.infrastructure.database.TransacaoRepository;

@@ -1,4 +1,4 @@
-package br.com.transacao.application.usecases;
+package br.com.transacao.application.usecases.transacao;
 
 import br.com.commons.dto.transacao.TransacaoDto;
 import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
@@ -13,7 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @SpringBootTest
@@ -27,12 +28,15 @@ public class CriarTransacaoTest {
     TransacaoGateway transacaoGateway;
 
     @Test
-    public void executarTransacao() {
+    public void executarTransacao() throws ParseException {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
         TransacaoDto dto = new TransacaoDto(
                 "LOJA123",
                 "PEDIDO456",
                 "uuid-abc-123",
-                new Date(),
+                formatter.parse("07/05/2025"),
                 3,
                 new BigDecimal("150.00"),
                 new BigDecimal("2.50"),
@@ -54,7 +58,7 @@ public class CriarTransacaoTest {
                 dto.codigoAutorizacao(),
                 dto.nsu(),
                 dto.bandeira(),
-                StatusTransacao.PENDENTE
+                StatusTransacao.AGENDADO
         );
 
         Assertions.assertTrue(transacao.isPresent());
@@ -62,12 +66,15 @@ public class CriarTransacaoTest {
     }
 
     @Test
-    public void deveCriarTransacao() {
+    public void deveCriarTransacao() throws ParseException {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
         TransacaoDto dto = new TransacaoDto(
                 "LOJA123",
                 "PEDIDO456",
                 "uuid-abc-123",
-                new Date(),
+                formatter.parse("07/05/2025"),
                 3,
                 new BigDecimal("150.00"),
                 new BigDecimal("2.50"),

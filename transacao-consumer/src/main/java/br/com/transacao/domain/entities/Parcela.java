@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Entity
@@ -21,7 +22,7 @@ public class Parcela {
     @Column(unique = true, updatable = false, columnDefinition = "VARCHAR(36)")
     private String uuid;
 
-    private String data;
+    private Date data;
     private Integer numero;
     private BigDecimal valorBruto;
     private BigDecimal valorLiquido;
