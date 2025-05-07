@@ -60,19 +60,21 @@ public class CriarTransacaoImplTest {
                 dto.codigoAutorizacao(),
                 dto.nsu(),
                 dto.bandeira(),
-                StatusTransacao.PENDENTE
+                StatusTransacao.AGENDADO
         );
 
         Assertions.assertTrue(transacao.isPresent());
     }
 
     @Test
-    public void deveCriarTransacao() {
+    public void deveCriarTransacao() throws ParseException {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         TransacaoDto dto = new TransacaoDto(
                 "LOJA123",
                 "PEDIDO456",
                 "uuid-abc-123",
-                new Date(),
+                formatter.parse("07/05/2025"),
                 3,
                 new BigDecimal("150.00"),
                 new BigDecimal("2.50"),
