@@ -2,6 +2,8 @@ package br.com.transacao.application.usecases.parcela;
 
 import br.com.commons.dto.transacao.ParcelaDto;
 import br.com.commons.dto.transacao.TransacaoDto;
+import br.com.transacao.adpaters.gateway.parcela.ParcelaGateway;
+import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
 import br.com.transacao.application.usecases.transacao.CriarTransacao;
 import br.com.transacao.domain.entities.Parcela;
 import br.com.transacao.domain.entities.Transacao;
@@ -30,6 +32,11 @@ public class CriarParcelaTest {
     @Autowired
     CalcularParcelas calcularParcelas;
 
+    @Autowired
+    TransacaoGateway transacaoGateway;
+    @Autowired
+    ParcelaGateway parcelaGateway;
+
     @Test
     public void deveCriarParcelasTransacaoDebito() throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -50,9 +57,11 @@ public class CriarParcelaTest {
         );
 
         Transacao transacao = criarTransacao.criarTransacao(dto);
+        transacaoGateway.save(transacao);
 
         List<ParcelaDto> parcelas =  calcularParcelas.calcular(transacao);
         Parcela parcela = criarParcela.criar(transacao, parcelas.get(0));
+        parcelaGateway.save(parcela);
 
         Assertions.assertEquals(1, parcelas.size());
         Assertions.assertNotNull(parcela.getId());
@@ -85,12 +94,16 @@ public class CriarParcelaTest {
         );
 
         Transacao transacao = criarTransacao.criarTransacao(dto);
+        transacaoGateway.save(transacao);
 
         List<ParcelaDto> parcelas =  calcularParcelas.calcular(transacao);
 
         Parcela p1 = criarParcela.criar(transacao, parcelas.get(0));
+        parcelaGateway.save(p1);
         Parcela p2 = criarParcela.criar(transacao, parcelas.get(1));
+        parcelaGateway.save(p2);
         Parcela p3 = criarParcela.criar(transacao, parcelas.get(2));
+        parcelaGateway.save(p3);
 
         Assertions.assertEquals(3, parcelas.size());
 
@@ -137,9 +150,11 @@ public class CriarParcelaTest {
         );
 
         Transacao transacao = criarTransacao.criarTransacao(dto);
+        transacaoGateway.save(transacao);
 
         List<ParcelaDto> parcelas =  calcularParcelas.calcular(transacao);
         Parcela parcela = criarParcela.criar(transacao, parcelas.get(0));
+        parcelaGateway.save(parcela);
 
         Assertions.assertEquals(1, parcelas.size());
         Assertions.assertNotNull(parcela.getId());

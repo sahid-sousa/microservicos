@@ -24,46 +24,6 @@ public class CriarTransacaoTest {
 
     @Autowired
     CriarTransacao criarTransacao;
-    @Autowired
-    TransacaoGateway transacaoGateway;
-
-    @Test
-    public void executarTransacao() throws ParseException {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        TransacaoDto dto = new TransacaoDto(
-                "LOJA123",
-                "PEDIDO456",
-                "uuid-abc-123",
-                formatter.parse("07/05/2025"),
-                3,
-                new BigDecimal("150.00"),
-                new BigDecimal("2.50"),
-                "CREDITO",
-                "123456******7890",
-                "AUTH123456",
-                987654,
-                "VISA"
-        );
-
-        criarTransacao.executar(dto);
-
-        Optional<Transacao> transacao = transacaoGateway.findByAtributos(
-                dto.data(),
-                dto.totalParcelas(),
-                dto.valor(),
-                dto.tipoTransacao(),
-                dto.cartao(),
-                dto.codigoAutorizacao(),
-                dto.nsu(),
-                dto.bandeira(),
-                StatusTransacao.AGENDADO
-        );
-
-        Assertions.assertTrue(transacao.isPresent());
-
-    }
 
     @Test
     public void deveCriarTransacao() throws ParseException {

@@ -39,7 +39,7 @@ public class Transacao {
     private String bandeira;
 
 
-    @OneToMany(mappedBy = "transacao", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transacao", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Parcela> parcelas = new ArrayList<>();
 
     @PrePersist
@@ -50,8 +50,8 @@ public class Transacao {
     }
 
     public void adicionarParcela(Parcela parcela) {
-        this.parcelas.add(parcela);
         parcela.setTransacao(this);
+        this.parcelas.add(parcela);
     }
 
 }

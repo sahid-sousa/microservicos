@@ -29,6 +29,6 @@ public class Parcela {
     private BigDecimal valorDesconto;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "transacao_id", nullable = false)
     private Transacao transacao;
 }

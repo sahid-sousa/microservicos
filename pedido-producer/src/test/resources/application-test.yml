@@ -1,17 +1,8 @@
 server:
-  port: 8098
-sftp:
-  hostname: localhost
-  port: 2222
-  username: development
-  password: development
-  remote:
-    directory: out/entrada
-backup:
-  directory:
+  port: 8090
 spring:
   application:
-    name: venda
+    name: pedido
   rabbitmq:
     host: localhost
     port: 5672

@@ -17,7 +17,7 @@ public class QuartzConfig {
 
     @Bean
     public Trigger jobTrigger(JobDetail jobDetail) {
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0/5 * * * * ?"); // Executa a cada 5 segundos
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0 0/5 * 1/1 * ? *"); // Executa a cada 5 segundos
 
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)

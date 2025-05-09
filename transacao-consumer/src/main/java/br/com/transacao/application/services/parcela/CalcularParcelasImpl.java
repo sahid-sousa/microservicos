@@ -74,13 +74,10 @@ public class CalcularParcelasImpl implements CalcularParcelas {
 
     private Date dataPagamentoParcela(Transacao transacao, Integer parcela) {
         Date date;
-        switch (transacao.getTipoTransacao()) {
-            case "DEBITO":
-                date = diaUtil.diasUteis(transacao.getData(), (parcela));
-                break;
-            default:
-                date = diaUtil.diasUteis(transacao.getData(), (30 * parcela));
-                break;
+        if (transacao.getTipoTransacao().equals("DEBITO")) {
+            date = diaUtil.diasUteis(transacao.getData(), (parcela));
+        } else {
+            date = diaUtil.diasUteis(transacao.getData(), (30 * parcela));
         }
         return date;
     }

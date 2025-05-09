@@ -4,6 +4,7 @@ package br.com.transacao.application.services.transacao;
 import br.com.commons.dto.GenericBuilder;
 import br.com.commons.dto.transacao.ParcelaDto;
 import br.com.commons.dto.transacao.TransacaoDto;
+import br.com.transacao.adpaters.gateway.parcela.ParcelaGateway;
 import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
 import br.com.transacao.application.usecases.parcela.CalcularParcelas;
 import br.com.transacao.application.usecases.parcela.CriarParcela;
@@ -21,11 +22,13 @@ import java.util.List;
 public class CriarTransacaoImpl implements CriarTransacao {
 
     private final TransacaoGateway transacaoGateway;
+    private final ParcelaGateway parcelaGateway;
     private final CalcularParcelas calcularParcelas;
     private final CriarParcela criarParcela;
 
-    public CriarTransacaoImpl(TransacaoGateway transacaoGateway, CalcularParcelas calcularParcelas, CriarParcela criarParcela) {
+    public CriarTransacaoImpl(TransacaoGateway transacaoGateway, ParcelaGateway parcelaGateway, CalcularParcelas calcularParcelas, CriarParcela criarParcela) {
         this.transacaoGateway = transacaoGateway;
+        this.parcelaGateway = parcelaGateway;
         this.calcularParcelas = calcularParcelas;
         this.criarParcela = criarParcela;
     }
@@ -34,10 +37,12 @@ public class CriarTransacaoImpl implements CriarTransacao {
     public void executar(TransacaoDto transacaoDto) {
         Transacao transacao = criarTransacao(transacaoDto);
         if (transacao.getParcelas().isEmpty()) {
+            transacaoGateway.save(transacao);
             List<ParcelaDto> parcelas = calcularParcelas.calcular(transacao);
             log.info("Agendamento:");
             for (ParcelaDto parcelaDto : parcelas) {
                 Parcela parcela = criarParcela.criar(transacao, parcelaDto);
+                parcelaGateway.save(parcela);
                 log.info(" - Transacao: #{} {} Codigo Aut.: {} Dt.: {} St.: {}", transacao.getId(), transacao.getTipoTransacao(), transacao.getCodigoAutorizacao(), transacao.getData(), transacao.getStatus());
                 log.info(" - Parcela Num: {} Vlb: {} Dt.: {}", parcela.getNumero(), parcela.getValorBruto(), parcela.getData());
             }

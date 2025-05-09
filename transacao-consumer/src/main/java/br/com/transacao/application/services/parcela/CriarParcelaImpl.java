@@ -2,8 +2,6 @@ package br.com.transacao.application.services.parcela;
 
 import br.com.commons.dto.GenericBuilder;
 import br.com.commons.dto.transacao.ParcelaDto;
-import br.com.transacao.adpaters.gateway.parcela.ParcelaGateway;
-import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
 import br.com.transacao.application.usecases.parcela.CriarParcela;
 import br.com.transacao.domain.entities.Parcela;
 import br.com.transacao.domain.entities.StatusTransacao;
@@ -14,14 +12,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class CriarParcelaImpl implements CriarParcela {
-
-    private final TransacaoGateway transacaoGateway;
-    private final ParcelaGateway parcelaGateway;
-
-    public CriarParcelaImpl(TransacaoGateway transacaoGateway, ParcelaGateway parcelaGateway) {
-        this.transacaoGateway = transacaoGateway;
-        this.parcelaGateway = parcelaGateway;
-    }
 
     @Override
     public Parcela criar(Transacao transacao, ParcelaDto parcelaDto) {
@@ -35,8 +25,6 @@ public class CriarParcelaImpl implements CriarParcela {
                 .build();
         transacao.setStatus(StatusTransacao.AGENDADO);
         transacao.adicionarParcela(parcela);
-        transacaoGateway.save(transacao);
-        parcelaGateway.save(parcela);
         return parcela;
     }
 

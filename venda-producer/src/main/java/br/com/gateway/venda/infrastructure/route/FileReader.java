@@ -54,6 +54,7 @@ public class FileReader implements Processor {
     public VendaDetailDto convertContentToVendaDetailDto(String[] fields) {
         try {
             return new VendaDetailDto(
+                    "",
                     stringToDate(fields[1]),
                     fields[2],
                     fields[3],
