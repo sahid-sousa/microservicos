@@ -1,0 +1,15 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: pedido
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        concurrency: 4
+        max-concurrency: 4
+        prefetch: 4

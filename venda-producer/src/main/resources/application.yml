@@ -1,0 +1,24 @@
+server:
+  port: 8098
+sftp:
+  hostname: localhost
+  port: 2222
+  username: development
+  password: development
+  remote:
+    directory: out/entrada
+backup:
+  directory:
+spring:
+  application:
+    name: venda
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        concurrency: 4
+        max-concurrency: 4
+        prefetch: 4

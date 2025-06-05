@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'br.com.commons.dto'
+version = '1.0.0'
+
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}

@@ -1,0 +1,33 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: pedido-consumer
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      data-source: quartzDataSource
+    properties:
+      org:
+        quartz:
+          jobStore:
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pedido_development
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
