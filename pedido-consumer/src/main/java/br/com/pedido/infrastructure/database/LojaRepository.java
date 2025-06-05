@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface LojaRepository extends Repository<Loja, Long> {
 
     Loja save(Loja loja);
-    Loja findById(Long id);
+    Optional<Loja> findById(Long id);
     Optional<Loja> findByCnpj(String cnpj);
     Loja findByCodigo(String codigo);
 

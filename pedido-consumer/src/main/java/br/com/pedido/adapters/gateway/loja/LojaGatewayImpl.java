@@ -21,7 +21,7 @@ public class LojaGatewayImpl implements LojaGateway {
     }
 
     @Override
-    public Loja findById(Long id) {
+    public Optional<Loja> findById(Long id) {
         return lojaRepository.findById(id);
     }
 

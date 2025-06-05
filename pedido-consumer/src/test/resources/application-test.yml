@@ -1,0 +1,33 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: pedido-consumer
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      data-source: quartzDataSource
+    properties:
+      org:
+        quartz:
+          jobStore:
+            driverDelegateClass: org.h2.Driver
+  datasource:
+    url: jdbc:h2:mem:pedido_test;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: false

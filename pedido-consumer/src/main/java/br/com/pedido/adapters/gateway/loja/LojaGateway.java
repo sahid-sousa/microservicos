@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface LojaGateway {
 
     Loja save(Loja loja);
-    Loja findById(Long id);
+    Optional<Loja> findById(Long id);
     Optional<Loja> findByCnpj(String cnpj);
     Loja findByCodigo(String codigo);
 
