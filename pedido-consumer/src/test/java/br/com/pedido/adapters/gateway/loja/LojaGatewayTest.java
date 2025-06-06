@@ -31,8 +31,6 @@ class LojaGatewayTest {
 
     private Loja loja;
 
-    private Pedido pedido;
-
     @BeforeEach
     public void setup() {
         //Given
@@ -40,7 +38,7 @@ class LojaGatewayTest {
         loja.setCodigo("LOJA-001");
         loja.setCnpj("12345678000199");
 
-        pedido = new Pedido();
+        Pedido pedido = new Pedido();
         pedido.setUuid(UUID.randomUUID().toString());
         pedido.setCodigo("PED123456");
         pedido.setValor(150.00);

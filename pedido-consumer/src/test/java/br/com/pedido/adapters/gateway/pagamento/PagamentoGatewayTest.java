@@ -3,24 +3,22 @@ package br.com.pedido.adapters.gateway.pagamento;
 import br.com.pedido.domain.entities.Loja;
 import br.com.pedido.domain.entities.Pagamento;
 import br.com.pedido.domain.entities.Pedido;
-import br.com.pedido.infrastructure.database.LojaRepository;
 import br.com.pedido.infrastructure.database.PagamentoRepository;
-import br.com.pedido.infrastructure.database.PedidoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import org.mockito.Mock;
-import java.util.Optional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class PagamentoGatewayTest {
@@ -32,13 +30,12 @@ class PagamentoGatewayTest {
     PagamentoGatewayImpl pagamentoGateway;
 
     private Pagamento pagamento;
-    private Loja loja;
     private Pedido pedido;
 
     @BeforeEach
     public void setup() {
         //Given
-        loja = new Loja();
+        Loja loja = new Loja();
         loja.setCodigo("LOJA-001");
         loja.setCnpj("12345678000199");
 
