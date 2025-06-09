@@ -45,7 +45,7 @@ public class ConciliarPedidoImpl implements ConciliarPedido {
         }
     }
 
-    private PedidoDto convertFrom(Pedido pedido) {
+    public PedidoDto convertFrom(Pedido pedido) {
         Loja loja = pedido.getLoja();
         LojaDto lojaDto = new LojaDto(loja.getUuid(),loja.getCodigo(), loja.getCnpj());
         List<PagamentoDto> pagamentosDto = getPagamentoDtos(pedido);
@@ -61,7 +61,7 @@ public class ConciliarPedidoImpl implements ConciliarPedido {
         );
     }
 
-    private List<PagamentoDto> getPagamentoDtos(Pedido pedido) {
+    public List<PagamentoDto> getPagamentoDtos(Pedido pedido) {
         List<Pagamento> pagamentos = pagamentoGateway.findPagamentoByPedido(pedido);
         List<PagamentoDto> pagamentosDto = new ArrayList<>();
         for(Pagamento pagamento : pagamentos) {
@@ -83,7 +83,7 @@ public class ConciliarPedidoImpl implements ConciliarPedido {
         return pagamentosDto;
     }
 
-    private void conciliar(PedidoDto pedidoDto) {
+    public void conciliar(PedidoDto pedidoDto) {
         producer.enviar(pedidoDto);
     }
 }

@@ -116,8 +116,6 @@ class CriarPedidoImplTest {
         criarPedidoImpl.executar(pedidoDto);
 
         //Then
-        //verify(criarPedidoImpl, times(1)).criarLoja(any(), any());
-        //verify(criarPedidoImpl, times(1)).criarPagamento(any(), any());
         verify(pedidoGateway, times(1)).save(eq(pedido));
     }
 
