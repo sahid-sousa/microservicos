@@ -43,7 +43,7 @@ public class CriarPedidoImpl implements CriarPedido {
 
     }
 
-    private Pedido criarPedido(PedidoDto pedidoDto) {
+    public Pedido criarPedido(PedidoDto pedidoDto) {
         return pedidoGateway.findByCodigo(pedidoDto.codigo())
                 .map( existente -> {
                     existente.setFaturado(pedidoDto.faturado());
@@ -58,7 +58,7 @@ public class CriarPedidoImpl implements CriarPedido {
                 });
     }
 
-    private void criarLoja(PedidoDto pedidoDto, Pedido pedido) {
+    public void criarLoja(PedidoDto pedidoDto, Pedido pedido) {
         Loja loja = lojaGateway.findByCnpj(pedidoDto.loja().cnpj()).orElseGet(() -> {
             Loja nova = new Loja();
             nova.setCodigo(pedidoDto.loja().codigo());
@@ -69,7 +69,7 @@ public class CriarPedidoImpl implements CriarPedido {
         lojaGateway.save(loja);
     }
 
-    private void criarPagamento(PedidoDto pedidoDto, Pedido pedido) {
+    public void criarPagamento(PedidoDto pedidoDto, Pedido pedido) {
         pedidoDto.pagamentos().forEach( pagamentoDto -> {
             Optional<Pagamento> pagamento = pagamentoGateway.findByCartaoAndBandeiraAndNsuAndCodigoAutorizacaoAndParcelas(
                     pagamentoDto.cartao(),
@@ -86,7 +86,7 @@ public class CriarPedidoImpl implements CriarPedido {
         });
     }
 
-    private static Pagamento getNovoPagamento(Pedido pedido, PagamentoDto pagamentoDto) {
+    public Pagamento getNovoPagamento(Pedido pedido, PagamentoDto pagamentoDto) {
         Pagamento novo = new Pagamento();
         novo.setTipo(pagamentoDto.tipo());
         novo.setTipoTransacao(pagamentoDto.tipoTransacao());

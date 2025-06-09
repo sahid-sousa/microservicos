@@ -31,7 +31,7 @@ class PedidoRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        //Give
+        //Given
         loja = new Loja();
         loja.setCodigo("LOJA-001");
         loja.setCnpj("12345678000199");
