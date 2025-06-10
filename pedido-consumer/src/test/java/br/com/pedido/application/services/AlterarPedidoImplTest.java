@@ -34,13 +34,12 @@ class AlterarPedidoImplTest {
     @Mock
     PedidoGateway pedidoGateway;
 
-    private Loja loja;
     private Pedido pedido;
 
     @BeforeEach
     void setup() {
         //Given
-        loja = new Loja();
+        Loja loja = new Loja();
         loja.setCodigo("LOJA-001");
         loja.setCnpj("12345678000199");
 
