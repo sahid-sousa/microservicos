@@ -6,6 +6,7 @@ import br.com.commons.dto.pedido.PedidoDto;
 import br.com.pedido.api.infrastructure.broker.Producer;
 import br.com.pedido.api.interfaces.controllers.PedidoController;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +32,7 @@ public class PedidoControllerTest {
     Producer<PedidoDto> producer;
 
     @Test
+    @DisplayName("deve Retornar Sucesso ao Receber Pedido")
     public void deveRetornarSucessoAoReceberPedido() throws Exception {
 
         LojaDto loja = new LojaDto("loja-uuid-001","LOJA001", "12.345.678/0001-99");
