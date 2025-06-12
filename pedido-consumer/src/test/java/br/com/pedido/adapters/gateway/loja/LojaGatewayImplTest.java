@@ -2,10 +2,12 @@ package br.com.pedido.adapters.gateway.loja;
 
 import br.com.pedido.domain.entities.Loja;
 import br.com.pedido.domain.entities.Pedido;
+import br.com.pedido.infrastructure.database.LojaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -19,10 +21,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class LojaGatewayTest {
+class LojaGatewayImplTest {
+
+    @InjectMocks
+    LojaGatewayImpl lojaGateway;
 
     @Mock
-    LojaGateway lojaGateway;
+    private LojaRepository lojaRepository;
 
     private Loja loja;
 
@@ -44,12 +49,11 @@ class LojaGatewayTest {
         loja.adicionarPedido(pedido);
     }
 
-
     @Test
     @DisplayName("Test given Loja Object  when save Loja then return saved Loja")
     void testGivenLojaObject_whenSaveLoja_thenReturnSavedLoja() {
         //Given
-        given(lojaGateway.save(loja)).willReturn(loja);
+        given(lojaRepository.save(loja)).willReturn(loja);
 
         //When
         Loja entity = lojaGateway.save(loja);
@@ -64,7 +68,7 @@ class LojaGatewayTest {
     @DisplayName("Test given LojaObject when findById then return LojaObject")
     void testGivenLojaObject_whenFindById_thenReturnLojaObject() {
         //Given
-        given(lojaGateway.findById(anyLong())).willReturn(Optional.of(loja));
+        given(lojaRepository.findById(anyLong())).willReturn(Optional.of(loja));
 
         //When
         Optional<Loja> findedLojaEntity = lojaGateway.findById(anyLong());
@@ -79,7 +83,7 @@ class LojaGatewayTest {
     @DisplayName("Test given LojaObject when findByCnpj then return LojaObject")
     void testGivenLojaObject_whenFindByCnpj_thenReturnLojaObject() {
         //Given
-        given(lojaGateway.findByCnpj(anyString())).willReturn(Optional.of(loja));
+        given(lojaRepository.findByCnpj(anyString())).willReturn(Optional.of(loja));
 
         //When
         Optional<Loja> findedLojaEntity = lojaGateway.findByCnpj(anyString());
@@ -94,7 +98,7 @@ class LojaGatewayTest {
     @DisplayName("Test given LojaObject when findByCodigo then return LojaObject")
     void testGivenLojaObject_whenFindByCodigo_thenReturnLojaObject() {
         //Given
-        given(lojaGateway.findByCodigo(anyString())).willReturn(loja);
+        given(lojaRepository.findByCodigo(anyString())).willReturn(loja);
 
         //WHen
         Loja findedLojaEntity = lojaGateway.findByCodigo(anyString());

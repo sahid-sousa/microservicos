@@ -3,10 +3,12 @@ package br.com.pedido.adapters.gateway.pagamento;
 import br.com.pedido.domain.entities.Loja;
 import br.com.pedido.domain.entities.Pagamento;
 import br.com.pedido.domain.entities.Pedido;
+import br.com.pedido.infrastructure.database.PagamentoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -19,10 +21,13 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class PagamentoGatewayTest {
+class PagamentoGatewayImplTest {
 
     @Mock
-    PagamentoGateway pagamentoGateway;
+    private PagamentoRepository pagamentoRepository;
+
+    @InjectMocks
+    PagamentoGatewayImpl pagamentoGateway;
 
     private Pagamento pagamento;
     private Pedido pedido;
@@ -59,7 +64,7 @@ class PagamentoGatewayTest {
     @DisplayName("Test given PagamentoObject when save Pagamento then return saved Pagamento")
     void testGivenPagamentoObject_whenSavePagamento_thenReturnSavedPagamento() {
         //Given
-        given(pagamentoGateway.save(pagamento)).willReturn(pagamento);
+        given(pagamentoRepository.save(pagamento)).willReturn(pagamento);
 
         //When
         Pagamento pagamentoEntity = pagamentoGateway.save(pagamento);
@@ -80,7 +85,7 @@ class PagamentoGatewayTest {
     @DisplayName("Test given PagamentoObject when findById then return PagamentoObject")
     void testGivenPagamentoObject_whenFindById_thenReturnPagamento() {
         //Given
-        given(pagamentoGateway.findById(anyLong())).willReturn(pagamento);
+        given(pagamentoRepository.findById(anyLong())).willReturn(pagamento);
 
         //When
         Pagamento findedPagamentoEntity = pagamentoGateway.findById(anyLong());
@@ -101,7 +106,7 @@ class PagamentoGatewayTest {
     @DisplayName("Test given PagamentoListObject when findPagamentoByPedido then return PagamentoList")
     void testGivenPagamentoListObject_whenFindPagamentoByPedido_thenReturnPagamentoList() {
         //Given
-        given(pagamentoGateway.findPagamentoByPedido(pedido)).willReturn(List.of(pagamento));
+        given(pagamentoRepository.findPagamentoByPedido(pedido)).willReturn(List.of(pagamento));
 
         //When
         List<Pagamento> findedPagamentoEntityList = pagamentoGateway.findPagamentoByPedido(pedido);
@@ -122,7 +127,7 @@ class PagamentoGatewayTest {
     @DisplayName("Test given PagamentoObject when findByCartaoAndBandeiraAndNsuAndCodigoAutorizacaoAndParcelas then return PagamentoObject")
     void testGivenPagamentoObject_whenFindByCartaoAndBandeiraAndNsuAndCodigoAutorizacaoAndParcelas_thenReturnPagamento() {
         //Given
-        given(pagamentoGateway.findByCartaoAndBandeiraAndNsuAndCodigoAutorizacaoAndParcelas(
+        given(pagamentoRepository.findByCartaoAndBandeiraAndNsuAndCodigoAutorizacaoAndParcelas(
                 anyString(),
                 anyString(),
                 anyInt(),

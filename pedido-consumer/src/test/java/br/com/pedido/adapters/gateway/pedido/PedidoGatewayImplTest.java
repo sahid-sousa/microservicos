@@ -1,12 +1,15 @@
 package br.com.pedido.adapters.gateway.pedido;
 
-import br.com.pedido.adapters.gateway.loja.LojaGateway;
+import br.com.pedido.adapters.gateway.loja.LojaGatewayImpl;
 import br.com.pedido.domain.entities.Loja;
 import br.com.pedido.domain.entities.Pedido;
+import br.com.pedido.infrastructure.database.LojaRepository;
+import br.com.pedido.infrastructure.database.PedidoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,13 +23,20 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class PedidoGatewayTest {
+class PedidoGatewayImplTest {
+
 
     @Mock
-    PedidoGateway pedidoGateway;
+    private PedidoRepository pedidoRepository;
+
+    @InjectMocks
+    PedidoGatewayImpl pedidoGateway;
 
     @Mock
-    LojaGateway lojaGateway;
+    private LojaRepository lojaRepository;
+
+    @InjectMocks
+    LojaGatewayImpl lojaGateway;
 
     private Loja loja;
     private Pedido pedido;
@@ -54,8 +64,8 @@ class PedidoGatewayTest {
     void testGivenPedidoObject_whenSavePedido_thenReturnSavedPedido() {
         //When
 
-        given(lojaGateway.save(loja)).willReturn(loja);
-        given(pedidoGateway.save(pedido)).willReturn(pedido);
+        given(lojaRepository.save(loja)).willReturn(loja);
+        given(pedidoRepository.save(pedido)).willReturn(pedido);
 
         lojaGateway.save(loja);
         Pedido pedidoEntity = pedidoGateway.save(pedido);
@@ -72,7 +82,7 @@ class PedidoGatewayTest {
     @DisplayName("Test given PedidoObject when findById then return Pedido Object")
     void testGivenPedidoObject_whenFindById_thenReturnPagamentoObject() {
         //Given
-        given(pedidoGateway.findById(anyLong())).willReturn(pedido);
+        given(pedidoRepository.findById(anyLong())).willReturn(pedido);
 
         //When
         Pedido findedPedidoEntity = pedidoGateway.findById(1L);
@@ -89,7 +99,7 @@ class PedidoGatewayTest {
     @DisplayName("Test given PedidoObject when findAllByLoja then return PedidoList")
     void testGivenPedidoObject_whenFindAllByLoja_thenReturnPedidoList() {
         //When
-        given(pedidoGateway.findAllByLoja(loja)).willReturn(List.of(pedido));
+        given(pedidoRepository.findAllByLoja(loja)).willReturn(List.of(pedido));
 
         //When
         List<Pedido> findedPedidoEntityList = pedidoGateway.findAllByLoja(loja);
@@ -106,7 +116,7 @@ class PedidoGatewayTest {
     @DisplayName("Test given Pedido object when findByCodigo' then return Pedido object")
     void testGivenPedidoObject_whenFindByCodigo_thenReturnPedidoObject() {
         //Given
-        given(pedidoGateway.findByCodigo(anyString())).willReturn(Optional.of(pedido));
+        given(pedidoRepository.findByCodigo(anyString())).willReturn(Optional.of(pedido));
 
         //When
         Optional<Pedido> findedPedidoEntity = pedidoGateway.findByCodigo(anyString());
@@ -123,7 +133,7 @@ class PedidoGatewayTest {
     @DisplayName("Test given Pedido object when findByUuid then return Pedido object")
     void testGivenPedidoObject_whenFindByUuid_thenReturnPedidoObject() {
         //Given
-        given(pedidoGateway.findByUuid(anyString())).willReturn(Optional.of(pedido));
+        given(pedidoRepository.findByUuid(anyString())).willReturn(Optional.of(pedido));
 
         //When
         Optional<Pedido> findedPedidoOptionalEntity = pedidoGateway.findByUuid(anyString());
@@ -141,7 +151,7 @@ class PedidoGatewayTest {
     @DisplayName("Test given PedidoObject when findAllByLoja then return PedidoList")
     void testGivenPedidoIdListObject_whenFindAllStatus_thenReturnPedidoList() {
         //Given
-        given(pedidoGateway.findAllStatus(anyBoolean(), anyBoolean(), any())).willReturn(List.of(1L, 2L, 3L));
+        given(pedidoRepository.findAllStatus(anyBoolean(), anyBoolean(), any())).willReturn(List.of(1L, 2L, 3L));
 
         //When
         List<Long> findedLongIdList = pedidoGateway.findAllStatus(anyBoolean(), anyBoolean(), any());
@@ -149,5 +159,6 @@ class PedidoGatewayTest {
         //Then
         assertFalse(findedLongIdList.isEmpty());
     }
+
 
 }
