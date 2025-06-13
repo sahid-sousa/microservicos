@@ -67,6 +67,10 @@ class ParcelaRepositoryTest {
 
         //Then
         assertNotNull(entity);
+        assertEquals(1, entity.getNumero());
+        assertEquals(new BigDecimal("100.00"), entity.getValorBruto());
+        assertEquals(new BigDecimal("99.00"), entity.getValorLiquido());
+        assertEquals(new BigDecimal("1"), entity.getValorDesconto());
     }
 
     @Test

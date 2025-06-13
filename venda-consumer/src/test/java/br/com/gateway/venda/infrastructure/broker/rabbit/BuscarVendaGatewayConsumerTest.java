@@ -1,44 +1,46 @@
-package br.com.gateway.venda.application.usecases;
+package br.com.gateway.venda.infrastructure.broker.rabbit;
 
 import br.com.commons.dto.pedido.LojaDto;
 import br.com.commons.dto.pedido.PagamentoDto;
 import br.com.commons.dto.pedido.PedidoDto;
-import br.com.commons.dto.venda.VendaDetailDto;
 import br.com.gateway.venda.application.usecase.BuscarVenda;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BuscarVendaTest {
+class BuscarVendaGatewayConsumerTest {
+
+    @Spy
+    @InjectMocks
+    BuscarVendaGatewayConsumer buscarVendaGatewayConsumer;
 
     @Mock
     BuscarVenda buscarVenda;
 
     private PedidoDto pedidoDto;
-    private VendaDetailDto novaVendaDetailDto;
 
     @BeforeEach
-    public void setup() {
-
+    public void setup() throws ParseException {
+        //Given
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         pedidoDto = new PedidoDto(
                 UUID.randomUUID().toString(), // uuid do pedido
                 "P0013570",                   // codigo
                 100.0,                        // valor
-                new Date(1688180400000L),     // data (timestamp em milissegundos)
+                formatter.parse("08/05/2025"),     // data (timestamp em milissegundos)
                 false,                        // faturado
                 false,                        // conciliado (assumido como false por ausência no JSON)
                 new LojaDto(
@@ -60,36 +62,16 @@ public class BuscarVendaTest {
                         )
                 )
         );
-
-        PagamentoDto pagamento = pedidoDto.pagamentos().get(0);
-
-        novaVendaDetailDto = new VendaDetailDto(
-                UUID.randomUUID().toString(),
-                pedidoDto.data(),
-                pagamento.cartao(),
-                pagamento.codigoAutorizacao(),
-                pagamento.nsu(),
-                pagamento.bandeira(),
-                pagamento.parcelas(),
-                pagamento.tipoTransacao(),
-                new BigDecimal("100.0"),
-                new BigDecimal("7.25")
-        );
-
     }
 
     @Test
-    @DisplayName("Test buscar venda")
-    public void testBuscarVenda() {
-        //Given
-        given(buscarVenda.executar(any())).willReturn(List.of(novaVendaDetailDto));
-
+    @DisplayName("Test Buscar Venda Gateway Consumer")
+    public void testBuscarVendaGatewayConsumer() {
         //When
-        List<VendaDetailDto> vendas = buscarVenda.executar(pedidoDto);
+        buscarVendaGatewayConsumer.consumer(pedidoDto);
 
         //Then
-        assertFalse(vendas.isEmpty());
-        assertEquals(1, vendas.size());
+        verify(buscarVenda, times(1)).executar(any(PedidoDto.class));
     }
 
 
