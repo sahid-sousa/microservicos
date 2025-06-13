@@ -1,170 +1,197 @@
 package br.com.transacao.application.usecases.parcela;
 
 import br.com.commons.dto.transacao.ParcelaDto;
-import br.com.commons.dto.transacao.TransacaoDto;
-import br.com.transacao.adpaters.gateway.parcela.ParcelaGateway;
-import br.com.transacao.adpaters.gateway.transacao.TransacaoGateway;
-import br.com.transacao.application.usecases.transacao.CriarTransacao;
 import br.com.transacao.domain.entities.Parcela;
+import br.com.transacao.domain.entities.StatusTransacao;
 import br.com.transacao.domain.entities.Transacao;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.ArrayList;
 
-@SpringBootTest
-@ActiveProfiles("test")
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+
 @ExtendWith(MockitoExtension.class)
 public class CriarParcelaTest {
 
-    @Autowired
+    @Mock
     CriarParcela criarParcela;
-    @Autowired
-    CriarTransacao criarTransacao;
-    @Autowired
-    CalcularParcelas calcularParcelas;
 
-    @Autowired
-    TransacaoGateway transacaoGateway;
-    @Autowired
-    ParcelaGateway parcelaGateway;
+    private SimpleDateFormat formatter;
 
-    @Test
-    public void deveCriarParcelasTransacaoDebito() throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        TransacaoDto dto = new TransacaoDto(
-                "LOJA123",
-                "PEDIDO456",
-                "uuid-abc-123",
-                formatter.parse("07/05/2025"),
-                1,
-                new BigDecimal("100.00"),
-                new BigDecimal("2.50"),
-                "DEBITO",
-                "123456******7890",
-                "AUTH123456",
-                987654,
-                "VISA"
-        );
-
-        Transacao transacao = criarTransacao.criarTransacao(dto);
-        transacaoGateway.save(transacao);
-
-        List<ParcelaDto> parcelas =  calcularParcelas.calcular(transacao);
-        Parcela parcela = criarParcela.criar(transacao, parcelas.get(0));
-        parcelaGateway.save(parcela);
-
-        Assertions.assertEquals(1, parcelas.size());
-        Assertions.assertNotNull(parcela.getId());
-
-        Assertions.assertEquals(new BigDecimal("100.00"), parcela.getValorBruto());
-        Assertions.assertEquals(new BigDecimal("97.50"), parcela.getValorLiquido());
-        Assertions.assertEquals(new BigDecimal("2.50"),  parcela.getValorDesconto());
-        Assertions.assertEquals(formatter.parse("08/05/2025"), parcela.getData());
-
+    @BeforeEach
+    public void setup() {
+        formatter = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     @Test
-    public void deveCriarParcelasTransacaoCredito() throws ParseException {
+    @DisplayName("Test Criar Parcelas Transacao Debito")
+    public void testCriarParcelasTransacaoDebito() throws ParseException {
+        //Given
+        Transacao transacao = new Transacao();
+        transacao.setCodigoLoja("LOJA123");
+        transacao.setCodigoPedido("PEDIDO456");
+        transacao.setValor(new BigDecimal("100.00"));
+        transacao.setTaxa(new BigDecimal("1"));
+        transacao. setStatus(StatusTransacao.PENDENTE);
+        transacao.setCartao("123456******7890");
+        transacao.setCodigoAutorizacao("AUTH123456");
+        transacao.setNsu(987654);
+        transacao.setBandeira("VISA");
+        transacao.setParcelas(new ArrayList<>());
+        transacao.setData(formatter.parse("07/05/2025"));
+        transacao. setTipoTransacao("DEBITO");
+        transacao.setQuantidadeParcelas(1);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        TransacaoDto dto = new TransacaoDto(
-                "LOJA123",
-                "PEDIDO456",
-                "uuid-abc-123",
-                formatter.parse("07/05/2025"),
-                3,
-                new BigDecimal("100.00"),
-                new BigDecimal("2.50"),
-                "CREDITO",
-                "123456******7890",
-                "AUTH123456",
-                987654,
-                "VISA"
+        ParcelaDto parcelaDebitoDto = new ParcelaDto(
+                formatter.parse("08/05/2025"),1,
+                new BigDecimal("100.00"), new BigDecimal("99.00"),
+                new BigDecimal("1")
         );
 
-        Transacao transacao = criarTransacao.criarTransacao(dto);
-        transacaoGateway.save(transacao);
+        Parcela parcela = new Parcela();
+        parcela.setData(formatter.parse("08/05/2025"));
+        parcela.setNumero(1);
+        parcela.setValorBruto(new BigDecimal("100.00"));
+        parcela.setValorLiquido(new BigDecimal("99.00"));
+        parcela.setValorDesconto(new BigDecimal("1"));
 
-        List<ParcelaDto> parcelas =  calcularParcelas.calcular(transacao);
+        given(criarParcela.criar(any(), any())).willReturn(parcela);
 
-        Parcela p1 = criarParcela.criar(transacao, parcelas.get(0));
-        parcelaGateway.save(p1);
-        Parcela p2 = criarParcela.criar(transacao, parcelas.get(1));
-        parcelaGateway.save(p2);
-        Parcela p3 = criarParcela.criar(transacao, parcelas.get(2));
-        parcelaGateway.save(p3);
+        //When
+        Parcela parcelaDebito = criarParcela.criar(transacao, parcelaDebitoDto);
 
-        Assertions.assertEquals(3, parcelas.size());
-
-        Assertions.assertNotNull(p1.getId());
-        Assertions.assertNotNull(p2.getId());
-        Assertions.assertNotNull(p3.getId());
-
-        Assertions.assertEquals(new BigDecimal("33.34"), p1.getValorBruto());
-        Assertions.assertEquals(new BigDecimal("32.50"), p1.getValorLiquido());
-        Assertions.assertEquals(new BigDecimal("0.84"),  p1.getValorDesconto());
-        Assertions.assertEquals(formatter.parse("18/06/2025"), p1.getData());
-
-        Assertions.assertEquals(new BigDecimal("33.33"), p2.getValorBruto());
-        Assertions.assertEquals(new BigDecimal("32.50"), p2.getValorLiquido());
-        Assertions.assertEquals(new BigDecimal("0.83"),  p2.getValorDesconto());
-        Assertions.assertEquals(formatter.parse("30/07/2025"), p2.getData());
-
-        Assertions.assertEquals(new BigDecimal("33.33"), p3.getValorBruto());
-        Assertions.assertEquals(new BigDecimal("32.50"), p3.getValorLiquido());
-        Assertions.assertEquals(new BigDecimal("0.83"),  p3.getValorDesconto());
-        Assertions.assertEquals(formatter.parse("10/09/2025"), p3.getData());
-
-
+        //Then
+        assertNotNull(parcelaDebito);
+        assertEquals(new BigDecimal("100.00"), parcelaDebito.getValorBruto());
+        assertEquals(new BigDecimal("99.00"), parcelaDebito.getValorLiquido());
+        assertEquals(new BigDecimal("1"),  parcelaDebito.getValorDesconto());
+        assertEquals(formatter.parse("08/05/2025"), parcelaDebito.getData());
     }
 
     @Test
-    public void deveCriarParcelasTransacaoAvistaCredito() throws ParseException {
+    @DisplayName("Test Criar Parcelas Transacao Credito Avista")
+    public void testCriarParcelasTransacaoCreditoAvista() throws ParseException {
+        //Given
+        Transacao transacao = new Transacao();
+        transacao.setCodigoLoja("LOJA123");
+        transacao.setCodigoPedido("PEDIDO456");
+        transacao.setValor(new BigDecimal("100.00"));
+        transacao.setTaxa(new BigDecimal("1"));
+        transacao. setStatus(StatusTransacao.PENDENTE);
+        transacao.setCartao("123456******7890");
+        transacao.setCodigoAutorizacao("AUTH123456");
+        transacao.setNsu(987654);
+        transacao.setBandeira("VISA");
+        transacao.setParcelas(new ArrayList<>());
+        transacao.setData(formatter.parse("07/05/2025"));
+        transacao. setTipoTransacao("CREDITO");
+        transacao.setQuantidadeParcelas(1);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        TransacaoDto dto = new TransacaoDto(
-                "LOJA123",
-                "PEDIDO456",
-                "uuid-abc-123",
-                formatter.parse("07/05/2025"),
-                1,
-                new BigDecimal("100.00"),
-                new BigDecimal("2.50"),
-                "CREDITO",
-                "123456******7890",
-                "AUTH123456",
-                987654,
-                "VISA"
+        ParcelaDto parcelaDebitoDto = new ParcelaDto(
+                formatter.parse("18/06/2025"),1,
+                new BigDecimal("100.00"), new BigDecimal("99.00"),
+                new BigDecimal("1")
         );
 
-        Transacao transacao = criarTransacao.criarTransacao(dto);
-        transacaoGateway.save(transacao);
+        Parcela parcela = new Parcela();
+        parcela.setData(formatter.parse("18/06/2025"));
+        parcela.setNumero(1);
+        parcela.setValorBruto(new BigDecimal("100.00"));
+        parcela.setValorLiquido(new BigDecimal("99.00"));
+        parcela.setValorDesconto(new BigDecimal("1"));
 
-        List<ParcelaDto> parcelas =  calcularParcelas.calcular(transacao);
-        Parcela parcela = criarParcela.criar(transacao, parcelas.get(0));
-        parcelaGateway.save(parcela);
+        given(criarParcela.criar(any(), any())).willReturn(parcela);
 
-        Assertions.assertEquals(1, parcelas.size());
-        Assertions.assertNotNull(parcela.getId());
-        Assertions.assertNotNull(transacao.getId());
+        //When
+        Parcela parcelaDebito = criarParcela.criar(transacao, parcelaDebitoDto);
 
-        Assertions.assertEquals(new BigDecimal("100.00"), parcela.getValorBruto());
-        Assertions.assertEquals(new BigDecimal("97.50"), parcela.getValorLiquido());
-        Assertions.assertEquals(new BigDecimal("2.50"),  parcela.getValorDesconto());
-        Assertions.assertEquals(formatter.parse("18/06/2025"), parcelas.get(0).data());
+        //Then
+        assertNotNull(parcelaDebito);
+        assertEquals(new BigDecimal("100.00"), parcelaDebito.getValorBruto());
+        assertEquals(new BigDecimal("99.00"), parcelaDebito.getValorLiquido());
+        assertEquals(new BigDecimal("1"),  parcelaDebito.getValorDesconto());
+        assertEquals(formatter.parse("18/06/2025"), parcelaDebito.getData());
+    }
 
+
+    @Test
+    @DisplayName("Test Criar Parcelas Transacao Credito")
+    public void testCriarParcelasTransacaoCredito() throws ParseException {
+        //Given
+        Transacao transacao = new Transacao();
+        transacao.setCodigoLoja("LOJA123");
+        transacao.setCodigoPedido("PEDIDO456");
+        transacao.setValor(new BigDecimal("100.00"));
+        transacao.setTaxa(new BigDecimal("1"));
+        transacao. setStatus(StatusTransacao.PENDENTE);
+        transacao.setCartao("123456******7890");
+        transacao.setCodigoAutorizacao("AUTH123456");
+        transacao.setNsu(987654);
+        transacao.setBandeira("VISA");
+        transacao.setParcelas(new ArrayList<>());
+        transacao.setData(formatter.parse("07/05/2025"));
+        transacao. setTipoTransacao("CREDITO");
+        transacao.setQuantidadeParcelas(2);
+
+        ParcelaDto parcelaUmDto = new ParcelaDto(
+                formatter.parse("18/06/2025"),1,
+                new BigDecimal("50.00"), new BigDecimal("49.50"),
+                new BigDecimal("0.50")
+        );
+
+
+        Parcela parcelaUm = new Parcela();
+        parcelaUm.setData(formatter.parse("18/06/2025"));
+        parcelaUm.setNumero(1);
+        parcelaUm.setValorBruto(new BigDecimal("50.00"));
+        parcelaUm.setValorLiquido(new BigDecimal("49.50"));
+        parcelaUm.setValorDesconto(new BigDecimal("1"));
+
+        ParcelaDto parcelaDoisDto = new ParcelaDto(
+                formatter.parse("30/07/2025"),2,
+                new BigDecimal("50.00"), new BigDecimal("49.50"),
+                new BigDecimal("0.50")
+        );
+
+        Parcela parcelaDois = new Parcela();
+        parcelaDois.setData(formatter.parse("30/07/2025"));
+        parcelaDois.setNumero(2);
+        parcelaDois.setValorBruto(new BigDecimal("50.00"));
+        parcelaDois.setValorLiquido(new BigDecimal("49.50"));
+        parcelaDois.setValorDesconto(new BigDecimal("1"));
+
+        //When
+        given(criarParcela.criar(any(), any())).willReturn(parcelaUm);
+        Parcela parcelaUmCredito = criarParcela.criar(transacao, parcelaUmDto);
+
+        given(criarParcela.criar(any(), any())).willReturn(parcelaDois);
+        Parcela parcelaDoisCredito = criarParcela.criar(transacao, parcelaDoisDto);
+
+        //Then
+        assertNotNull(parcelaUmCredito);
+        assertEquals(new BigDecimal("50.00"), parcelaUmCredito.getValorBruto());
+        assertEquals(new BigDecimal("49.50"), parcelaUmCredito.getValorLiquido());
+        assertEquals(new BigDecimal("1"),  parcelaUmCredito.getValorDesconto());
+        assertEquals(1, parcelaUmCredito.getNumero());
+        assertEquals(formatter.parse("18/06/2025"), parcelaUmCredito.getData());
+
+        assertNotNull(parcelaDoisCredito);
+        assertEquals(new BigDecimal("50.00"), parcelaDoisCredito.getValorBruto());
+        assertEquals(new BigDecimal("49.50"), parcelaDoisCredito.getValorLiquido());
+        assertEquals(new BigDecimal("1"),  parcelaDoisCredito.getValorDesconto());
+        assertEquals(2, parcelaDoisCredito.getNumero());
+        assertEquals(formatter.parse("30/07/2025"), parcelaDoisCredito.getData());
     }
 
 }

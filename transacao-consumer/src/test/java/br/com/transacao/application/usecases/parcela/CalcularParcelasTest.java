@@ -38,7 +38,6 @@ public class CalcularParcelasTest {
         formatter = new SimpleDateFormat("dd/MM/yyyy");
     }
 
-
     @Test
     @DisplayName("Test Criar Parcelas Transacao Debito")
     public void testCriarParcelasTransacaoDebito() throws ParseException {
@@ -100,7 +99,7 @@ public class CalcularParcelasTest {
         TransacaoDto transacaoDto = new TransacaoDto(
                 "LOJA123", "PEDIDO456",
                 "uuid-abc-123", formatter.parse("07/05/2025"),
-                1, new BigDecimal("100.00"),
+                2, new BigDecimal("100.00"),
                 new BigDecimal("1"), "DEBITO",
                 "123456******7890", "AUTH123456",
                 987654, "VISA"

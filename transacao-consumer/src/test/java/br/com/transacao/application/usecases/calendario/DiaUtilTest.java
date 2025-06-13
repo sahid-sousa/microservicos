@@ -31,6 +31,7 @@ public class DiaUtilTest {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(formatter.parse("06/05/2025"));
+
         //When
         Boolean resultado = diaUtil.ehDiaUtil(cal);
 
