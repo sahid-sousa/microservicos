@@ -75,6 +75,4 @@ public class FileReader implements Processor {
         return DATE_FORMAT.parse(date);
     }
 
-
-
 }
