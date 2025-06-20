@@ -5,7 +5,6 @@ import br.com.commons.dto.pedido.PagamentoDto;
 import br.com.commons.dto.pedido.PedidoDto;
 import br.com.pedido.api.infrastructure.broker.Producer;
 import br.com.pedido.api.interfaces.controllers.PedidoController;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,7 +33,7 @@ public class PedidoControllerTest {
 
     @Test
     @DisplayName("deve Retornar Sucesso ao Receber Pedido")
-    public void deveRetornarSucessoAoReceberPedido() throws Exception {
+    public void deveRetornarSucessoAoReceberPedido() {
 
         LojaDto loja = new LojaDto("loja-uuid-001","LOJA001", "12.345.678/0001-99");
         PagamentoDto pagamento = new PagamentoDto(
@@ -60,7 +60,7 @@ public class PedidoControllerTest {
 
         ResponseEntity<?> response = pedidoController.pedido(pedido);
         verify(producer, times(1)).enviar(any(PedidoDto.class));
-        Assertions.assertEquals(200, response.getStatusCode().value());
+        assertEquals(200, response.getStatusCode().value());
 
     }
 }

@@ -1,0 +1,191 @@
+services:
+  broker:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - rabbitmq_network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  sftp-app:
+    image: atmoz/sftp
+    container_name: sftp-atmoz-app
+    volumes:
+      - ./upload:/home/development/out/gateway
+    ports:
+      - "2222:22"
+    command: development:12345:1001:1001:/home/development/out
+    networks:
+      - sftp_network
+
+  postgres-db:
+    image: postgres:12.4
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pedido_development
+    ports:
+      - "5432:5432"
+    networks:
+      - db_network
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+
+  pedido-producer:
+    build: ./pedido-producer
+    image: pedido-producer:latest
+    container_name: pedido-producer
+    environment:
+      SERVER_PORT: 8080
+      RABBIT_MQ_HOST: broker
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USERNAME: guest
+      RABBIT_MQ_PASSWORD: guest
+    ports:
+      - "8080:8080"
+    networks:
+      - rabbitmq_network
+    depends_on:
+      broker:
+        condition: service_healthy
+
+  pedido-consumer:
+    build: ./pedido-consumer
+    image: pedido-consumer:latest
+    container_name: pedido-consumer
+    environment:
+      SERVER_PORT: 8080
+      RABBIT_MQ_HOST: broker
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USERNAME: guest
+      RABBIT_MQ_PASSWORD: guest
+      DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/pedido_development
+      DATASOURCE_USERNAME: postgres
+      DATASOURCE_PASSWORD: postgres
+      DATASOURCE_DBCREATE: update
+    ports:
+      - "8085:8080"
+    networks:
+      - rabbitmq_network
+      - db_network
+    depends_on:
+      broker:
+        condition: service_healthy
+      postgres-db:
+        condition: service_healthy
+
+  venda-producer:
+    build: ./venda-producer
+    image: venda-producer:latest
+    container_name: venda-producer
+    environment:
+      SERVER_PORT: 8080
+      RABBIT_MQ_HOST: broker
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USERNAME: guest
+      RABBIT_MQ_PASSWORD: guest
+      SFTP_HOST: sftp-app
+      SFTP_PORT: 22
+      SFTP_USERNAME: development
+      SFTP_PASSWORD: 12345
+      SFTP_DIRECTORY: out/gateway
+    ports:
+      - "8098:8080"
+    networks:
+      - rabbitmq_network
+      - sftp_network
+    depends_on:
+      broker:
+        condition: service_healthy
+      sftp-app:
+        condition: service_started
+
+  venda-consumer:
+     build: ./venda-consumer
+     image: venda-consumer:latest
+     container_name: venda-consumer
+     environment:
+       SERVER_PORT: 8080
+       RABBIT_MQ_HOST: broker
+       RABBIT_MQ_PORT: 5672
+       RABBIT_MQ_USERNAME: guest
+       RABBIT_MQ_PASSWORD: guest
+       DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/venda_development
+       DATASOURCE_USERNAME: postgres
+       DATASOURCE_PASSWORD: postgres
+       DATASOURCE_DBCREATE: update
+     ports:
+       - "8097:8080"
+     networks:
+       - rabbitmq_network
+       - db_network
+     depends_on:
+       broker:
+         condition: service_healthy
+       postgres-db:
+         condition: service_healthy
+
+  transacao-producer:
+    build: ./transacao-producer
+    image: transacao-producer:latest
+    container_name: transacao-producer
+    environment:
+      SERVER_PORT: 8080
+      RABBIT_MQ_HOST: broker
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USERNAME: guest
+      RABBIT_MQ_PASSWORD: guest
+    ports:
+      - "8095:8080"
+    networks:
+      - rabbitmq_network
+    depends_on:
+      broker:
+        condition: service_healthy
+
+  transacao-consumer:
+    build: ./transacao-consumer
+    image: transacao-consumer:latest
+    container_name: transacao-consumer
+    environment:
+      SERVER_PORT: 8080
+      RABBIT_MQ_HOST: broker
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USERNAME: guest
+      RABBIT_MQ_PASSWORD: guest
+      DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/transacao_development
+      DATASOURCE_USERNAME: postgres
+      DATASOURCE_PASSWORD: postgres
+      DATASOURCE_DBCREATE: update
+    ports:
+      - "8090:8080"
+    networks:
+      - rabbitmq_network
+      - db_network
+    depends_on:
+      broker:
+        condition: service_healthy
+      postgres-db:
+        condition: service_healthy
+
+networks:
+  rabbitmq_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+  sftp_network:
+    driver: bridge

@@ -1,24 +1,24 @@
 server:
-  port: 8098
-sftp:
-  hostname: localhost
-  port: 2222
-  username: development
-  password: development
-  remote:
-    directory: out/entrada
-backup:
-  directory:
+  port: ${SERVER_PORT:8098}
 spring:
   application:
     name: venda
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBIT_MQ_HOST:localhost}
+    port: ${RABBIT_MQ_PORT:5672}
+    username: ${RABBIT_MQ_USERNAME:guest}
+    password: ${RABBIT_MQ_PASSWORD:guest}
     listener:
       simple:
         concurrency: 4
         max-concurrency: 4
         prefetch: 4
+sftp:
+  hostname: ${SFTP_HOST:localhost}
+  port: ${SFTP_PORT:2222}
+  username: ${SFTP_USERNAME:development}
+  password: ${SFTP_PASSWORD:development}
+  remote:
+    directory: ${SFTP_DIRECTORY:out/entrada}
+backup:
+  directory:
