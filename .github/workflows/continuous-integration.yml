@@ -39,25 +39,31 @@ jobs:
     - name: Push to Docker Hub Container Registry
       run: |
        docker tag venda-producer ${{ secrets.DOCKER_USERNAME }}/venda-producer:${{ github.run_id }}
+       docker tag venda-producer ${{ secrets.DOCKER_USERNAME }}/venda-producer:latest
        docker push ${{ secrets.DOCKER_USERNAME }}/venda-producer:${{ github.run_id }}
        docker push ${{ secrets.DOCKER_USERNAME }}/venda-producer:latest
        
        docker tag venda-consumer ${{ secrets.DOCKER_USERNAME }}/venda-consumer:${{ github.run_id }}
+       docker tag venda-consumer ${{ secrets.DOCKER_USERNAME }}/venda-consumer:latest
        docker push ${{ secrets.DOCKER_USERNAME }}/venda-consumer:${{ github.run_id }}
        docker push ${{ secrets.DOCKER_USERNAME }}/venda-consumer:latest
        
        docker tag pedido-producer ${{ secrets.DOCKER_USERNAME }}/pedido-producer:${{ github.run_id }}
+       docker tag pedido-producer ${{ secrets.DOCKER_USERNAME }}/pedido-producer:latest
        docker push ${{ secrets.DOCKER_USERNAME }}/pedido-producer:${{ github.run_id }}
        docker push ${{ secrets.DOCKER_USERNAME }}/pedido-producer:latest
        
        docker tag pedido-consumer ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:${{ github.run_id }}
+       docker tag pedido-consumer ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:latest
        docker push ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:${{ github.run_id }}
        docker push ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:latest
        
        docker tag transacao-producer ${{ secrets.DOCKER_USERNAME }}/transacao-producer:${{ github.run_id }}
+       docker tag transacao-producer ${{ secrets.DOCKER_USERNAME }}/transacao-producer:latest
        docker push ${{ secrets.DOCKER_USERNAME }}/transacao-producer:${{ github.run_id }}
        docker push ${{ secrets.DOCKER_USERNAME }}/transacao-producer:latest
        
        docker tag transacao-consumer ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:${{ github.run_id }}
+       docker tag transacao-consumer ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:latest
        docker push ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:${{ github.run_id }}
        docker push ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:latest
