@@ -38,4 +38,21 @@ jobs:
 
     - name: Push to Docker Hub Container Registry
       run: |
+       docker tag venda-producer:latest ${{ secrets.DOCKER_USERNAME }}/venda-producer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/venda-producer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/venda-producer:latest
        docker tag venda-consumer:latest ${{ secrets.DOCKER_USERNAME }}/venda-consumer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/venda-consumer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/venda-consumer:latest
+       docker tag pedido-producer:latest ${{ secrets.DOCKER_USERNAME }}/pedido-producer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/pedido-producer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/pedido-producer:latest
+       docker tag pedido-consumer:latest ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/pedido-consumer:latest
+       docker tag transacao-producer:latest ${{ secrets.DOCKER_USERNAME }}/transacao-producer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/transacao-producer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/transacao-producer:latest
+       docker tag transacao-consumer:latest ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:${{ github.run_id }}
+       docker push ${{ secrets.DOCKER_USERNAME }}/transacao-consumer:latest
