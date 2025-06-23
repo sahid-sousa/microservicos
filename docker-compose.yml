@@ -47,7 +47,7 @@ services:
 
   pedido-producer:
     build: ./pedido-producer
-    image: pedido-producer:latest
+    image: pedido-producer
     container_name: pedido-producer
     environment:
       SERVER_PORT: 8080
@@ -65,7 +65,7 @@ services:
 
   pedido-consumer:
     build: ./pedido-consumer
-    image: pedido-consumer:latest
+    image: pedido-consumer
     container_name: pedido-consumer
     environment:
       SERVER_PORT: 8080
@@ -90,7 +90,7 @@ services:
 
   venda-producer:
     build: ./venda-producer
-    image: venda-producer:latest
+    image: venda-producer
     container_name: venda-producer
     environment:
       SERVER_PORT: 8080
@@ -116,7 +116,7 @@ services:
 
   venda-consumer:
      build: ./venda-consumer
-     image: venda-consumer:latest
+     image: venda-consumer
      container_name: venda-consumer
      environment:
        SERVER_PORT: 8080
@@ -141,7 +141,7 @@ services:
 
   transacao-producer:
     build: ./transacao-producer
-    image: transacao-producer:latest
+    image: transacao-producer
     container_name: transacao-producer
     environment:
       SERVER_PORT: 8080
@@ -159,7 +159,7 @@ services:
 
   transacao-consumer:
     build: ./transacao-consumer
-    image: transacao-consumer:latest
+    image: transacao-consumer
     container_name: transacao-consumer
     environment:
       SERVER_PORT: 8080
