@@ -1,3 +1,5 @@
+[![Continuous Integration With Github Actions](https://github.com/sahid-sousa/rest-with-spring-boot/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/sahid-sousa/rest-with-spring-boot/actions/workflows/continuous-integration.yml)
+
 # 🐳 Ambiente de Microsserviços com Docker
 
 Este repositório define um ambiente completo de microsserviços com suporte a mensageria, persistência em banco de dados e integração via SFTP, utilizando **Docker**.
