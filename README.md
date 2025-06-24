@@ -1,3 +1,7 @@
+![Java 17+](https://img.shields.io/badge/Java-17%2B-blue?logo=java&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-%207.x-02303A?logo=gradle&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=springboot&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
 [![Continuous Integration With Github Actions](https://github.com/sahid-sousa/rest-with-spring-boot/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/sahid-sousa/rest-with-spring-boot/actions/workflows/continuous-integration.yml)
 
 # 🐳 Ambiente de Microsserviços com Docker
@@ -6,17 +10,17 @@ Este repositório define um ambiente completo de microsserviços com suporte a m
 
 ## 📦 Serviços Incluídos
 
-| Serviço              | Porta(s)       | Descrição                                      |
-|----------------------|----------------|------------------------------------------------|
-| **RabbitMQ**         | 5672 / 15672   | Broker de mensagens com painel web             |
-| **PostgreSQL**       | 5432           | Banco de dados relacional                      |
-| **SFTP (Atmoz)**     | 2222           | Servidor de arquivos via SFTP                  |
-| **Pedido Producer**  | 8080           | Envia mensagens para o RabbitMQ                |
-| **Pedido Consumer**  | 8085           | Consome mensagens e grava no banco de dados    |
-| **Venda Producer**   | 8098           | Envia mensagens e arquivos via SFTP            |
-| **Venda Consumer**   | 8097           | Consome mensagens e grava no banco de dados    |
-| **Transação Producer**| 8095          | Envia mensagens para o RabbitMQ                |
-| **Transação Consumer**| 8090          | Consome mensagens e grava no banco de dados    |
+| Serviço                | Porta(s)     | Descrição                                   |
+|------------------------|--------------|---------------------------------------------|
+| **RabbitMQ**           | 5672 / 15672 | Broker de mensagens com painel web          |
+| **PostgreSQL**         | 5432         | Banco de dados relacional                   |
+| **SFTP (Atmoz)**       | 2222         | Servidor de arquivos via SFTP               |
+| **Pedido Producer**    | 8080         | Envia mensagens para o RabbitMQ             |
+| **Pedido Consumer**    | 8085         | Consome mensagens e grava no banco de dados |
+| **Venda Producer**     | 8098         | Envia mensagens e arquivos via SFTP         |
+| **Venda Consumer**     | 8097         | Consome mensagens e grava no banco de dados |
+| **Transação Producer** | 8095         | Envia mensagens para o RabbitMQ             |
+| **Transação Consumer** | 8090         | Consome mensagens e grava no banco de dados |
 
 ---
 
